@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FayeChat</title>
+  <%= stylesheet_link_tag    "application" %>
+  <%= javascript_include_tag "http://localhost:9292/faye.js","application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body >
+    <div id="wrapper">
+    <%= yield %>
+    </div>
+</body>
+</html>

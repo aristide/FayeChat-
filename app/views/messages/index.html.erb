@@ -1,0 +1,98 @@
+<script type="text/javascript">
+
+$(document).ready(function(){
+    subscribe(client,"/newmember",newmember_handler);
+    subscribe(client,"/newmessage",newmessage_handler);
+    subscribe(client,"/writer",writer_handler);
+    
+    $('#new_message').submit(function(){
+        $.post($(this).attr("action"),$(this).serialize(),null,"script");
+        $('#message_text').val('');
+        return false;
+    });
+    
+    $("#message_text").keypress(function(event){
+        if((event.which >= 32 && event.which <= 127) || event.which >= 256){
+            publish(client,"/writer",{'id':$('#message_user_id').val(),'activity':true});
+        }else{
+            publish(client,"/writer",{'id':$('#message_user_id').val(),'activity':false});
+        }
+    });
+    
+    eval_nbr_utilisateur();
+    scrollatbottom("chat_zone");
+});
+
+function eval_nbr_utilisateur(){
+    var liste_utilisateurs = $("#liste_utilisateurs").find("li");
+    var nbr =  liste_utilisateurs.length;
+    $('#nbr_utilisateurs').html("Nombre d'utilisateurs:"+nbr);
+}
+
+function writer_handler(data){
+    var activity = $('#liste_utilisateurs').find("#"+data.id);
+    if(data.activity){
+        activity.find("small").html("(writting)");
+    }else {
+        activity.find("small").html("");
+    }
+}
+
+function scrollatbottom(id){
+        var chat = $('#'+id).get(0);
+        chat.scrollTop = chat.scrollHeight;
+}
+
+function newmessage_handler(data){
+    if(data.text){
+        var chat_content = "<span>"+data.user+" >> "+data.text+"</span><br/ >";
+        $("#chat_zone").append(chat_content);
+        scrollatbottom("chat_zone");
+    }
+};
+
+function newmember_handler(data){
+    if(data.enter){
+        $('#liste_utilisateurs').append('<li id="'+data.id+'">'+data.name+'<small id="activity"></small></li>');
+    }
+    if(data.leave){
+        var contact = $('#liste_utilisateurs').find("#"+data.id);
+        $(contact).remove();
+    }
+    eval_nbr_utilisateur();
+};
+
+</script>
+<div id="header">
+    <div id="header_left">
+        <%= session[:name] %>
+    </div>
+    <div id="header_right">
+        <%= link_to 'Deconnexion' ,logout_path %>
+    </div>
+</div>
+<div id="notification">
+<%= notice %>
+</div>
+<div id = "chat_content">
+    <div id="chat_message_form">
+        <div id="chat_zone" >
+            <% @messages.each do |message| %>
+            <span><%= message.user.name %> >> <%= message.text %></span><br />
+            <% end %>
+        </div>
+        <%= render 'form' %>
+    </div>
+    <div id="chat_users">
+        <div id="nbr_utilisateurs"></div>
+            <ul id="liste_utilisateurs">
+                <% @users.each do |user| %>
+                    <li id="<%= user.id %>"><%= user.name %> <small id="activity"></small></li>
+                <% end %>
+            </ul>
+        </div>
+    </div>
+    <div id="footer">
+        &copy; Aristide thomas mendoo
+    </div>
+</div>

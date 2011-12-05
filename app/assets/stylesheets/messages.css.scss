@@ -1,0 +1,38 @@
+// Place all the styles related to the messages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#chat_content{
+    overflow:hidden;
+    
+    #chat_message_form{
+        width:600px;
+        float:left;
+        
+        #chat_zone{
+            border:1px solid #cccccc;
+            width:600px;
+            height:300px;
+            overflow:auto;
+        }
+        
+        #new_message{
+            margin-top:5px;
+        }
+    }
+
+    #chat_users{
+            float:right;
+            width:175px;
+        #nbr_utilisateurs{
+        
+        }
+        #liste_utilisateurs{
+            overflow:auto;
+            border:1px solid #cccccc;
+            height:270px;
+        }
+        
+    }
+
+}

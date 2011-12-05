@@ -1,0 +1,26 @@
+
+
+<div>
+<% if flash[:notice] %>
+    <%= flash[:notice] %><br />
+   
+<% end %>
+<%= link_to 'Creer mon compte', new_user_path %>
+
+<%= form_tag login_path do%>
+<table>
+    <tr>
+        <td>Code</td>
+        <td><%= text_field :user,:code %></td>
+    </tr>
+    <tr>
+        <td>Password</td>
+        <td><%= password_field :user,:password %></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><%= submit_tag 'Connexion' %></td>
+    </tr>
+</table>
+<% end %>
+</div>

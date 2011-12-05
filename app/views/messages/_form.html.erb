@@ -1,0 +1,9 @@
+<%= form_for Message.new, :remote => true do |f| %>
+  
+ <div class="field">
+    <%= f.number_field :user_id , :type => 'hidden', :value => session[:user] %>
+  </div>
+  <div class="field">
+    Message: <%= f.text_field :text %>
+  </div>
+<% end %>
